@@ -1,14 +1,16 @@
 import tkinter as tk
+from tkinter import ttk
 from conta import Conta
 import json
 
 
 def cadastrar():
-    conta = Conta(input_titular.get(), input_agencia.get(), input_cpf.get())
+    conta = Conta(entry_titular.get(), entry_agencia.get(), entry_cpf.get())
 
     with open("clientes.json", "r") as clientes_arq:
+        clientes = json.load(clientes_arq)
 
-        clientes.append({
+    clientes.append({
             "titular": conta.titular,
             "agencia": conta.agencia,
             "numero": conta.numero,
@@ -18,23 +20,13 @@ def cadastrar():
             "chavepix": conta.chavepix
         })
 
-        with open("clientes.json", "w") as clientes_escrita:
-            json.dump(clientes, clientes_escrita, indent=4)
-        label_resposta.configure(
+    with open("clientes.json", "w") as clientes_escrita:
+        json.dump(clientes, clientes_escrita, indent=4)
+    label_resposta.configure(
             text=f"Conta: {conta.numero} Titular: {conta.titular} cadastrado com sucesso!",
             fg="green")
 
-app = tk.Tk()
 
-import tkinter as tk
-from tkinter import ttk
-
-# Função de envio (placeholder)
-def enviar_dados():
-    titular = entry_titular.get()
-    agencia = entry_agencia.get()
-    cpf = entry_cpf.get()
-    label_resposta.config(text=f"Conta cadastrada:\nTitular: {titular}\nAgência: {agencia}\nCPF: {cpf}")
 
 # ==================== Janela Principal ====================
 janela = tk.Tk()
@@ -74,7 +66,7 @@ style = ttk.Style()
 style.configure("TButton", font=("Helvetica", 11, "bold"), foreground="white", background="#0b3d91")
 style.map("TButton", background=[("active", "#074185")])
 
-btn_enviar = ttk.Button(janela, text="ENVIAR", command=enviar_dados, style="TButton")
+btn_enviar = ttk.Button(janela, text="ENVIAR", command=cadastrar, style="TButton")
 btn_enviar.pack(pady=20)
 
 # Label de Resposta
